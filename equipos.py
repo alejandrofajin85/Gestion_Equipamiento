@@ -1,4 +1,4 @@
-"""Funciones para administrar los equipos y su historial."""
+"""Funciones para administrar los equipos y guardar su historial."""
 
 import json
 from datetime import datetime
@@ -6,6 +6,7 @@ from datetime import datetime
 from tabulate import tabulate
 
 
+# Se usan dos archivos para separar el estado actual de los movimientos.
 ARCHIVO_EQUIPOS = "equipos.json"
 ARCHIVO_HISTORIAL = "historial.json"
 
@@ -14,14 +15,15 @@ def cargar_datos(nombre_archivo):
     """Carga una lista guardada en un archivo JSON.
 
     Args:
-        nombre_archivo (str): Nombre del archivo que se desea abrir.
+        nombre_archivo (str): Nombre del archivo que se quiere abrir.
 
     Returns:
-        list: Lista con los datos encontrados.
+        list: Datos encontrados o una lista vacía si ocurre un error.
     """
     try:
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
-            return json.load(archivo)
+            datos = json.load(archivo)
+            return datos
 
     except FileNotFoundError:
         print(f"No se encontró el archivo {nombre_archivo}.")
@@ -41,14 +43,19 @@ def guardar_datos(nombre_archivo, datos):
 
     Args:
         nombre_archivo (str): Archivo donde se guardarán los datos.
-        datos (list): Lista que se desea guardar.
+        datos (list): Lista que se quiere guardar.
 
     Returns:
         bool: True si se guardó correctamente o False si hubo un error.
     """
     try:
         with open(nombre_archivo, "w", encoding="utf-8") as archivo:
-            json.dump(datos, archivo, indent=4, ensure_ascii=False)
+            json.dump(
+                datos,
+                archivo,
+                indent=4,
+                ensure_ascii=False
+            )
 
         return True
 
@@ -58,17 +65,17 @@ def guardar_datos(nombre_archivo, datos):
 
 
 def obtener_fecha_actual():
-    """Devuelve la fecha y hora actual.
+    """Devuelve la fecha y hora actuales con un formato legible.
 
     Returns:
-        str: Fecha y hora con formato día, mes, año, hora y minutos.
+        str: Fecha y hora actuales.
     """
     fecha_actual = datetime.now()
     return fecha_actual.strftime("%d/%m/%Y %H:%M")
 
 
 def registrar_movimiento(codigo, tipo_movimiento, detalle):
-    """Guarda un movimiento en el historial del equipo.
+    """Guarda un movimiento en el historial de un equipo.
 
     Args:
         codigo (str): Código de inventario.
@@ -76,7 +83,7 @@ def registrar_movimiento(codigo, tipo_movimiento, detalle):
         detalle (str): Información sobre el movimiento.
 
     Returns:
-        bool: True si el movimiento fue guardado correctamente.
+        bool: True si el movimiento se guardó correctamente.
     """
     historial = cargar_datos(ARCHIVO_HISTORIAL)
 
@@ -96,16 +103,18 @@ def buscar_por_codigo(codigo):
     """Busca un equipo por su código de inventario.
 
     Args:
-        codigo (str): Código que se desea buscar.
+        codigo (str): Código que se quiere buscar.
 
     Returns:
         dict: Equipo encontrado.
-        None: Si el equipo no existe.
+        None: Si no existe un equipo con ese código.
     """
     equipos = cargar_datos(ARCHIVO_EQUIPOS)
 
     for equipo in equipos:
-        if equipo["codigo"].lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             return equipo
 
     return None
@@ -115,11 +124,11 @@ def buscar_por_numero_serie(numero_serie):
     """Busca un equipo por su número de serie.
 
     Args:
-        numero_serie (str): Número de serie que se desea buscar.
+        numero_serie (str): Número de serie que se quiere buscar.
 
     Returns:
         dict: Equipo encontrado.
-        None: Si el equipo no existe.
+        None: Si no existe un equipo con ese número de serie.
     """
     equipos = cargar_datos(ARCHIVO_EQUIPOS)
 
@@ -133,13 +142,13 @@ def buscar_por_numero_serie(numero_serie):
 
 
 def buscar_por_usuario(usuario):
-    """Busca los equipos asignados a un usuario.
+    """Busca todos los equipos asignados a un usuario.
 
     Args:
         usuario (str): Nombre completo o parte del nombre.
 
     Returns:
-        list: Lista con los equipos encontrados.
+        list: Equipos encontrados.
     """
     equipos = cargar_datos(ARCHIVO_EQUIPOS)
     equipos_encontrados = []
@@ -156,8 +165,8 @@ def buscar_por_usuario(usuario):
 def generar_codigo(tipo):
     """Genera el siguiente código de inventario disponible.
 
-    Las PC y notebooks usan el prefijo EQ.
-    Los demás equipos usan el prefijo HW.
+    Las PC y notebooks usan EQ.
+    Los demás equipos usan HW.
 
     Args:
         tipo (str): Tipo de equipo que se está agregando.
@@ -167,6 +176,7 @@ def generar_codigo(tipo):
     """
     equipos = cargar_datos(ARCHIVO_EQUIPOS)
 
+    # Los códigos se separan en equipos principales y hardware adicional.
     if tipo.lower() in ["pc de escritorio", "notebook"]:
         prefijo = "EQ"
     else:
@@ -174,6 +184,7 @@ def generar_codigo(tipo):
 
     numero_mayor = 0
 
+    # Se busca el número más alto usado con el mismo prefijo.
     for equipo in equipos:
         codigo = equipo.get("codigo", "")
 
@@ -192,7 +203,7 @@ def generar_codigo(tipo):
 
 
 def seleccionar_tipo_equipo():
-    """Muestra los tipos de equipo disponibles.
+    """Muestra los tipos disponibles y devuelve el seleccionado.
 
     Returns:
         str: Tipo de equipo seleccionado.
@@ -245,9 +256,8 @@ def agregar_equipo():
         )
         return
 
-    equipo_repetido = buscar_por_numero_serie(numero_serie)
-
-    if equipo_repetido is not None:
+    # El número de serie no puede repetirse.
+    if buscar_por_numero_serie(numero_serie) is not None:
         print("Ya existe un equipo con ese número de serie.")
         return
 
@@ -257,10 +267,13 @@ def agregar_equipo():
     sistema_operativo = input(
         "Sistema operativo (opcional): "
     ).strip()
-    observaciones = input("Observaciones (opcional): ").strip()
+    observaciones = input(
+        "Observaciones (opcional): "
+    ).strip()
 
     codigo = generar_codigo(tipo)
 
+    # Todo equipo nuevo ingresa disponible y queda en depósito.
     nuevo_equipo = {
         "codigo": codigo,
         "tipo": tipo,
@@ -298,7 +311,7 @@ def mostrar_equipos(equipos):
     """Muestra una lista de equipos en forma de tabla.
 
     Args:
-        equipos (list): Lista de equipos que se desea mostrar.
+        equipos (list): Lista de equipos que se quiere mostrar.
     """
     if len(equipos) == 0:
         print("\nNo hay equipos para mostrar.")
@@ -330,7 +343,13 @@ def mostrar_equipos(equipos):
     ]
 
     print()
-    print(tabulate(tabla, headers=encabezados, tablefmt="grid"))
+    print(
+        tabulate(
+            tabla,
+            headers=encabezados,
+            tablefmt="grid"
+        )
+    )
 
 
 def mostrar_todos_los_equipos():
@@ -343,7 +362,7 @@ def mostrar_equipos_por_estado(estado):
     """Muestra los equipos que tienen un estado determinado.
 
     Args:
-        estado (str): Estado que se desea buscar.
+        estado (str): Estado que se quiere buscar.
     """
     equipos = cargar_datos(ARCHIVO_EQUIPOS)
     equipos_encontrados = []
@@ -360,7 +379,7 @@ def mostrar_detalle_equipo(equipo):
     """Muestra toda la información actual de un equipo.
 
     Args:
-        equipo (dict): Equipo que se desea mostrar.
+        equipo (dict): Equipo que se quiere mostrar.
     """
     print("\nDATOS DEL EQUIPO")
     print(f"Código: {equipo.get('codigo', '')}")
@@ -372,7 +391,7 @@ def mostrar_detalle_equipo(equipo):
     print(f"Memoria RAM: {equipo.get('memoria_ram', '')}")
     print(f"Almacenamiento: {equipo.get('almacenamiento', '')}")
     print(
-        f"Sistema operativo: "
+        "Sistema operativo: "
         f"{equipo.get('sistema_operativo', '')}"
     )
     print(f"Estado: {equipo.get('estado', '')}")
@@ -380,7 +399,7 @@ def mostrar_detalle_equipo(equipo):
     print(f"Usuario: {equipo.get('usuario', '')}")
     print(f"Sector: {equipo.get('sector', '')}")
     print(
-        f"Fecha de asignación: "
+        "Fecha de asignación: "
         f"{equipo.get('fecha_asignacion', '')}"
     )
     print(f"Fecha de baja: {equipo.get('fecha_baja', '')}")
@@ -398,7 +417,9 @@ def mostrar_historial_equipo(codigo):
     movimientos = []
 
     for movimiento in historial:
-        if movimiento.get("codigo", "").lower() == codigo.lower():
+        codigo_movimiento = movimiento.get("codigo", "")
+
+        if codigo_movimiento.lower() == codigo.lower():
             movimientos.append([
                 movimiento.get("fecha", ""),
                 movimiento.get("movimiento", ""),
@@ -492,7 +513,9 @@ def asignar_equipo():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -518,6 +541,7 @@ def asignar_equipo():
         )
         return
 
+    # Al asignarlo deja el depósito y pasa a estar con el usuario.
     equipo_encontrado["estado"] = "Asignado"
     equipo_encontrado["ubicacion"] = "Usuario asignado"
     equipo_encontrado["usuario"] = usuario
@@ -546,7 +570,9 @@ def devolver_equipo():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -561,6 +587,8 @@ def devolver_equipo():
     usuario_anterior = equipo_encontrado.get("usuario", "")
     sector_anterior = equipo_encontrado.get("sector", "")
 
+    # La devolución libera los datos actuales del usuario.
+    # La asignación anterior sigue guardada en el historial.
     equipo_encontrado["estado"] = "Disponible"
     equipo_encontrado["ubicacion"] = "Depósito"
     equipo_encontrado["usuario"] = ""
@@ -591,7 +619,9 @@ def modificar_equipo():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -599,9 +629,7 @@ def modificar_equipo():
         print("No se encontró un equipo con ese código.")
         return
 
-    print(
-        "\nPresione Enter para mantener el valor actual."
-    )
+    print("\nPresione Enter para mantener el valor actual.")
 
     marca = input(
         f"Marca [{equipo_encontrado.get('marca', '')}]: "
@@ -612,43 +640,42 @@ def modificar_equipo():
     ).strip()
 
     numero_serie = input(
-        f"Número de serie "
+        "Número de serie "
         f"[{equipo_encontrado.get('numero_serie', '')}]: "
     ).strip()
 
     procesador = input(
-        f"Procesador "
+        "Procesador "
         f"[{equipo_encontrado.get('procesador', '')}]: "
     ).strip()
 
     memoria_ram = input(
-        f"Memoria RAM "
+        "Memoria RAM "
         f"[{equipo_encontrado.get('memoria_ram', '')}]: "
     ).strip()
 
     almacenamiento = input(
-        f"Almacenamiento "
+        "Almacenamiento "
         f"[{equipo_encontrado.get('almacenamiento', '')}]: "
     ).strip()
 
     sistema_operativo = input(
-        f"Sistema operativo "
+        "Sistema operativo "
         f"[{equipo_encontrado.get('sistema_operativo', '')}]: "
     ).strip()
 
     observaciones = input(
-        f"Observaciones "
+        "Observaciones "
         f"[{equipo_encontrado.get('observaciones', '')}]: "
     ).strip()
 
+    # Antes de cambiar el número de serie se controla que no esté usado.
     if numero_serie != "":
-        equipo_con_misma_serie = buscar_por_numero_serie(
-            numero_serie
-        )
+        equipo_misma_serie = buscar_por_numero_serie(numero_serie)
 
         if (
-            equipo_con_misma_serie is not None
-            and equipo_con_misma_serie["codigo"]
+            equipo_misma_serie is not None
+            and equipo_misma_serie["codigo"]
             != equipo_encontrado["codigo"]
         ):
             print(
@@ -656,6 +683,7 @@ def modificar_equipo():
             )
             return
 
+    # Los campos vacíos conservan el valor que ya tenía el equipo.
     if marca != "":
         equipo_encontrado["marca"] = marca
 
@@ -675,9 +703,7 @@ def modificar_equipo():
         equipo_encontrado["almacenamiento"] = almacenamiento
 
     if sistema_operativo != "":
-        equipo_encontrado[
-            "sistema_operativo"
-        ] = sistema_operativo
+        equipo_encontrado["sistema_operativo"] = sistema_operativo
 
     if observaciones != "":
         equipo_encontrado["observaciones"] = observaciones
@@ -699,7 +725,9 @@ def marcar_como_daniado():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -723,6 +751,7 @@ def marcar_como_daniado():
     usuario_anterior = equipo_encontrado.get("usuario", "")
     sector_anterior = equipo_encontrado.get("sector", "")
 
+    # Un equipo dañado deja de estar asignado y pasa a reparación.
     equipo_encontrado["estado"] = "Dañado"
     equipo_encontrado["ubicacion"] = "Reparación"
     equipo_encontrado["usuario"] = ""
@@ -755,7 +784,9 @@ def marcar_como_disponible():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -770,6 +801,7 @@ def marcar_como_disponible():
         )
         return
 
+    # Si fue reparado vuelve a quedar disponible en depósito.
     equipo_encontrado["estado"] = "Disponible"
     equipo_encontrado["ubicacion"] = "Depósito"
     equipo_encontrado["usuario"] = ""
@@ -794,7 +826,9 @@ def marcar_como_robado():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -811,14 +845,14 @@ def marcar_como_robado():
         return
 
     confirmar = input(
-        "¿Confirma que desea marcar el equipo como robado? "
-        "S/N: "
+        "¿Confirma que desea marcar el equipo como robado? S/N: "
     ).strip().lower()
 
     if confirmar != "s":
         print("La operación fue cancelada.")
         return
 
+    # El equipo queda fuera del stock disponible.
     equipo_encontrado["estado"] = "Robado"
     equipo_encontrado["ubicacion"] = "Baja"
     equipo_encontrado["usuario"] = ""
@@ -842,7 +876,9 @@ def dar_de_baja():
     equipo_encontrado = None
 
     for equipo in equipos:
-        if equipo.get("codigo", "").lower() == codigo.lower():
+        codigo_actual = equipo.get("codigo", "")
+
+        if codigo_actual.lower() == codigo.lower():
             equipo_encontrado = equipo
             break
 
@@ -878,6 +914,7 @@ def dar_de_baja():
         print("La operación fue cancelada.")
         return
 
+    # La baja es definitiva y el equipo deja de estar disponible.
     equipo_encontrado["estado"] = "Dado de baja"
     equipo_encontrado["ubicacion"] = "Baja"
     equipo_encontrado["usuario"] = ""
