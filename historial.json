@@ -1,1 +1,284 @@
-[]
+[
+    {
+        "codigo": "EQ-0001",
+        "fecha": "02/06/2026 08:30",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0001",
+        "fecha": "10/06/2026 09:15",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Juan Pérez, sector Administración."
+    },
+    {
+        "codigo": "EQ-0002",
+        "fecha": "03/06/2026 10:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0002",
+        "fecha": "05/06/2026 11:20",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Martín Suárez, sector Logística."
+    },
+    {
+        "codigo": "EQ-0002",
+        "fecha": "25/06/2026 15:40",
+        "movimiento": "Devolución",
+        "detalle": "Devuelto por Martín Suárez, sector Logística. Equipo disponible en depósito."
+    },
+    {
+        "codigo": "EQ-0003",
+        "fecha": "04/06/2026 09:10",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0003",
+        "fecha": "15/05/2026 11:30",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a María Gómez, sector Recursos Humanos."
+    },
+    {
+        "codigo": "EQ-0004",
+        "fecha": "06/06/2026 12:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0004",
+        "fecha": "08/07/2026 14:15",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo enviado a reparación."
+    },
+    {
+        "codigo": "EQ-0005",
+        "fecha": "07/06/2026 13:20",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0006",
+        "fecha": "08/06/2026 09:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0006",
+        "fecha": "20/06/2026 14:20",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Carlos Rodríguez, sector Ventas."
+    },
+    {
+        "codigo": "EQ-0007",
+        "fecha": "09/06/2026 10:30",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0008",
+        "fecha": "10/06/2026 08:45",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0008",
+        "fecha": "20/06/2026 11:10",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo enviado a reparación."
+    },
+    {
+        "codigo": "EQ-0008",
+        "fecha": "01/07/2026 10:00",
+        "movimiento": "Baja",
+        "detalle": "Equipo dado de baja. Motivo: Equipo irreparable. Observaciones: No enciende."
+    },
+    {
+        "codigo": "EQ-0009",
+        "fecha": "11/06/2026 09:40",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0009",
+        "fecha": "18/06/2026 13:00",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Nicolás Silva, sector Comercial."
+    },
+    {
+        "codigo": "EQ-0009",
+        "fecha": "04/07/2026 17:10",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo marcado como robado."
+    },
+    {
+        "codigo": "EQ-0010",
+        "fecha": "12/06/2026 08:15",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0010",
+        "fecha": "05/06/2026 08:45",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Laura Martínez, sector Contabilidad."
+    },
+    {
+        "codigo": "EQ-0011",
+        "fecha": "13/06/2026 09:30",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0012",
+        "fecha": "14/06/2026 10:10",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0012",
+        "fecha": "06/07/2026 16:00",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo enviado a reparación."
+    },
+    {
+        "codigo": "EQ-0013",
+        "fecha": "15/06/2026 11:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0013",
+        "fecha": "12/06/2026 10:10",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Diego Fernández, sector Sistemas."
+    },
+    {
+        "codigo": "EQ-0014",
+        "fecha": "16/06/2026 12:30",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0015",
+        "fecha": "17/06/2026 13:40",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "EQ-0015",
+        "fecha": "25/06/2026 09:40",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Sofía López, sector Compras."
+    },
+    {
+        "codigo": "HW-0001",
+        "fecha": "01/06/2026 08:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0001",
+        "fecha": "10/06/2026 09:20",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Juan Pérez, sector Administración."
+    },
+    {
+        "codigo": "HW-0002",
+        "fecha": "02/06/2026 09:10",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0003",
+        "fecha": "03/06/2026 10:20",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0003",
+        "fecha": "09/07/2026 11:30",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo enviado a reparación."
+    },
+    {
+        "codigo": "HW-0004",
+        "fecha": "04/06/2026 11:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0004",
+        "fecha": "20/06/2026 14:25",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Carlos Rodríguez, sector Ventas."
+    },
+    {
+        "codigo": "HW-0005",
+        "fecha": "05/06/2026 12:10",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0006",
+        "fecha": "06/06/2026 13:20",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0006",
+        "fecha": "20/06/2026 15:00",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo enviado a reparación."
+    },
+    {
+        "codigo": "HW-0006",
+        "fecha": "28/06/2026 16:10",
+        "movimiento": "Baja",
+        "detalle": "Equipo dado de baja. Motivo: Pantalla irreparable."
+    },
+    {
+        "codigo": "HW-0007",
+        "fecha": "07/06/2026 14:00",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0007",
+        "fecha": "10/06/2026 09:00",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Javier Molina, sector Ventas."
+    },
+    {
+        "codigo": "HW-0007",
+        "fecha": "03/07/2026 18:00",
+        "movimiento": "Cambio de estado",
+        "detalle": "Equipo marcado como robado."
+    },
+    {
+        "codigo": "HW-0008",
+        "fecha": "08/06/2026 15:10",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0009",
+        "fecha": "09/06/2026 08:20",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    },
+    {
+        "codigo": "HW-0009",
+        "fecha": "05/06/2026 08:50",
+        "movimiento": "Asignación",
+        "detalle": "Asignado a Laura Martínez, sector Contabilidad."
+    },
+    {
+        "codigo": "HW-0010",
+        "fecha": "10/06/2026 09:30",
+        "movimiento": "Alta",
+        "detalle": "Equipo agregado al inventario."
+    }
+]
